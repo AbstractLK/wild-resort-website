@@ -2,12 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import image1 from "@/public/about-1.jpg";
 import image2 from "@/public/about-2.jpg";
+import { getCabins } from "../_lib/data-service";
+
+export const revalidate = 86400; // revalidate every 24 hours
 
 export const metadata = {
   title: "About",
 };
 
-export default function Page() {
+export default async function Page() {
+  const cabins = await getCabins();
+
   return (
     <div className="max-w-6xl xl:max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-12 lg:gap-x-24 lg:gap-y-32 items-center">
       <div className="lg:col-span-8">
@@ -23,7 +28,7 @@ export default function Page() {
             and enjoying simple pleasures with family.
           </p>
           <p>
-            Our 8 luxury cabins provide a cozy base, but the real freedom and
+            Our {cabins.length} luxury cabins provide a cozy base, but the real freedom and
             peace you&apos;ll find in the surrounding mountains. Wander through
             lush forests, breathe in the fresh air, and watch the stars twinkle
             above from the warmth of a campfire or your hot tub.

@@ -1,11 +1,20 @@
+import { Suspense } from "react";
+import Spinner from "../_components/Spinner";
+import CabinList from "../_components/CabinList";
+import FilterButtons from "@/app/_components/FilterButtons";
+
+export const revalidate = 3600; // revalidate every 1 hour
 
 export const metadata = {
   title: "Cabins",
 };
 
-export default function Page() {
-  // CHANGE
-  const cabins = [];
+export default async function Page({searchParams}) {
+
+  const searchParamsData = await searchParams;
+  // If searchParams is null or undefined, the expression searchParams?.capacity will return undefined instead of throwing an error.
+  // In this case, if searchParams?.capacity is null or undefined, the expression will evaluate to 'all' as default value.
+  const filter = searchParamsData?.capacity ?? "all";
 
   return (
     <div className="max-w-6xl xl:max-w-7xl mx-auto">
@@ -20,6 +29,14 @@ export default function Page() {
         home away from home. The perfect spot for a peaceful, calm vacation.
         Welcome to paradise.
       </p>
+
+      <div className="flex justify-end mb-8">
+        <FilterButtons />
+      </div>
+
+      <Suspense fallback={<Spinner />} key={filter}>
+        <CabinList filter={filter} />
+      </Suspense>
     </div>
   );
 }
