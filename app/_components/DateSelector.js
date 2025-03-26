@@ -1,10 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { useReservation } from "./ReservationContext";
 
 export default function DateSelector({cabin, settings, bookedDates}) {
+    const {range, setRange, resetRange} = useReservation();
+    
   // CHANGE
   const regularPrice = 23;
   const discount = 3;
@@ -21,11 +24,13 @@ export default function DateSelector({cabin, settings, bookedDates}) {
       <DayPicker
         className="pt-10 pb-5 place-self-center text-slate-400"
         mode="range"
+        onSelect={setRange}
+        selected={range}
         min={minBookingLength + 1}
         max={maxBookingLength}
         startMonth={new Date()}
-        fromDate={new Date()}
-        toYear={new Date().getFullYear() + 5}
+        disabled={{ before: new Date() }}
+        endMonth={new Date(new Date().getFullYear() + 5, 0)}
         captionLayout="dropdown"
         numberOfMonths={1}
       />
@@ -56,14 +61,14 @@ export default function DateSelector({cabin, settings, bookedDates}) {
             </>
           ) : null}
         </div>
-        {/* {range.from || range.to ? (
+        {range.from || range.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
-            onClick={() => resetRange()}
+            onClick={resetRange}
           >
             Clear
           </button>
-        ) : null} */}
+        ) : null}
       </div>
     </div>
   );
