@@ -30,12 +30,10 @@ export const getCabins = async () => {
 
     // For testing
 //   await new Promise((res) => setTimeout(res, 1000));
-
   if (error) {
     console.error(error);
     throw new Error('Cabins could not be loaded');
   }
-
   return data;
 };
 
@@ -88,4 +86,30 @@ export async function getBookedDatesByCabinId(cabinId) {
     .flat();
 
   return bookedDates;
+}
+
+
+// Guests are uniquely identified by their email address
+export async function getGuest(email) {
+  const { data, error } = await supabase
+    .from('guests')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  // No error here. We handle the possibility of no guest in the sign in callback
+  return data;
+}
+
+
+// CREATE
+export async function createGuest(newGuest) {
+  const { data, error } = await supabase.from('guests').insert([newGuest]);
+
+  if (error) {
+    console.error(error);
+    throw new Error('Guest could not be created');
+  }
+
+  return data;
 }
