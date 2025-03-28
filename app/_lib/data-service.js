@@ -113,3 +113,42 @@ export async function createGuest(newGuest) {
 
   return data;
 }
+
+
+/////////////
+// UPDATE
+
+// The updatedFields is an object which should ONLY contain the updated data
+export async function updateGuest(id, updatedFields) {
+  const { data, error } = await supabase
+    .from('guests')
+    .update(updatedFields)
+    .eq('id', id)
+    // .select()
+    // .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Guest could not be updated');
+  }
+  return data;
+}
+
+
+// export async function getBookings(guestId) {
+//   const { data, error, count } = await supabase
+//     .from('bookings')
+//     // We also need data on the cabins as well.
+//     .select(
+//       'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)'
+//     )
+//     .eq('guestId', guestId)
+//     .order('startDate');
+
+//   if (error) {
+//     console.error(error);
+//     throw new Error('Bookings could not get loaded');
+//   }
+
+//   return data;
+// }
