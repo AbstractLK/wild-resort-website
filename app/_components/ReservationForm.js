@@ -25,7 +25,7 @@ export default function ReservationForm({ cabin, user }) {
       {range.to && <span> To: {range.to.toLocaleDateString()}</span>}
       <form className="bg-slate-800 py-10 px-16 text-lg flex flex-col gap-5">
         <div className="space-y-2">
-          <span htmlFor="numGuests">How many guests?</span>
+          <label htmlFor="numGuests">How many guests?</label>
           <select
             name="numGuests"
             className="px-5 py-3 bg-slate-200 text-slate-800 w-full shadow-sm rounded-sm"
@@ -40,9 +40,9 @@ export default function ReservationForm({ cabin, user }) {
           </select>
         </div>
         <div className="space-y-2">
-          <span htmlFor="observations">
+          <label htmlFor="observations">
             Anything we should know about your stay?
-          </span>
+          </label>
           <textarea
             name="observations"
             className="px-5 py-3 bg-slate-200 text-slate-800 w-full shadow-sm rounded-sm"
