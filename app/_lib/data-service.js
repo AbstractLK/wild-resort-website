@@ -134,21 +134,62 @@ export async function updateGuest(id, updatedFields) {
   return data;
 }
 
+export async function updateBooking(id, updatedFields) {
+  const { error } = await supabase
+    .from('bookings')
+    .update(updatedFields)
+    .eq('id', id)
+    .select()
+    .single();
 
-// export async function getBookings(guestId) {
-//   const { data, error, count } = await supabase
-//     .from('bookings')
-//     // We also need data on the cabins as well.
-//     .select(
-//       'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)'
-//     )
-//     .eq('guestId', guestId)
-//     .order('startDate');
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be updated');
+  }
+}
 
-//   if (error) {
-//     console.error(error);
-//     throw new Error('Bookings could not get loaded');
-//   }
 
-//   return data;
-// }
+export async function getBookings(guestId) {
+  const { data, error, count } = await supabase
+    .from('bookings')
+    // We also need data on the cabins as well.
+    .select(
+      'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)'
+    )
+    .eq('guestId', guestId)
+    .order('startDate');
+
+  if (error) {
+    console.error(error);
+    throw new Error('Bookings could not get loaded');
+  }
+
+  return data;
+}
+
+
+export async function getBooking(bookingId) {
+  const { data, error, count } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('id', bookingId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not get loaded');
+  }
+
+  return data;
+}
+
+// DELETE ---------------------------------
+
+export async function deleteBooking(id) {
+  const { error } = await supabase.from('bookings').delete().eq('id', id);
+
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be deleted');
+  }
+}
