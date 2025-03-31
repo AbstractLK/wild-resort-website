@@ -2,21 +2,9 @@
 
 import React, { useState } from "react";
 import { updateGuestProfile } from "../_lib/actions";
-import { useFormStatus } from "react-dom";
+import SubmitButton from "./SubmitButton";
 
 export default function UpdateProfileForm({ guest, children }) {
-  
-  const Button = () => {
-    const { pending } = useFormStatus();
-    return (
-      <button
-        className="bg-amber-500 px-8 py-4 text-slate-800 font-semibold hover:bg-amber-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
-        disabled={pending}
-      >
-        {pending ? "Updating..." : "Update profile"}
-      </button>
-    );
-  };
 
   return (
     <form
@@ -60,7 +48,9 @@ export default function UpdateProfileForm({ guest, children }) {
       </div>
 
       <div className="flex justify-end items-center mt-6">
-        <Button />
+        <SubmitButton pendingText="Updating...">
+          Update profile
+        </SubmitButton>
       </div>
     </form>
   );
