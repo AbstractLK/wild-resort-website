@@ -3,29 +3,29 @@
 import { createContext, useState, useContext } from "react";
 
 const ReservationContext = createContext();
-const initialState = {from: null, to: null};
+const initialState = { from: null, to: null };
 
-const ReservationProvider = ({children}) => {
-	const [range, setRange] = useState(initialState);
+const ReservationProvider = ({ children }) => {
+  const [range, setRange] = useState(initialState);
+  const resetRange = () => {
+    setRange(initialState);
+  };
 
-    const resetRange = () => {
-        setRange(initialState);
-    }
-
-	return(
-			<ReservationContext.Provider value={{range, setRange, resetRange}}>
-				{children}
-			</ReservationContext.Provider>
-		);
-}
+  return (
+    <ReservationContext.Provider value={{ range, setRange, resetRange }}>
+      {children}
+    </ReservationContext.Provider>
+  );
+};
 
 const useReservation = () => {
-	const context = useContext(ReservationContext);
-	if (context=== null) {
-		throw new Error("context was used outside provider");
-	}
+  const context = useContext(ReservationContext);
+  if (context === null) {
+    throw new Error("context was used outside provider");
+  }
 
-	return context;
-}
+  return context;
+};
 
-export {ReservationProvider, useReservation};
+
+export { ReservationProvider, useReservation };

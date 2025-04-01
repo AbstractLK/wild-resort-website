@@ -4,35 +4,45 @@ import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useReservation } from "./ReservationContext";
+import { differenceInDays, isSameDay, isWithinInterval } from "date-fns";
 
-export default function DateSelector({cabin, settings, bookedDates}) {
-    const {range, setRange, resetRange} = useReservation();
-    
-  // CHANGE
-  const regularPrice = 23;
-  const discount = 3;
-  const numNights = 2;
-  const cabinPrice = 23;
-//   const range = { from: null, to: null };
+function isAlreadyBooked(range, datesArr) {
+  return (
+    range.from &&
+    range.to &&
+    datesArr.some((date) =>
+      isWithinInterval(date, { start: range.from, end: range.to }) // For the date within the interval
+    )
+  );
+}
 
-  // SETTINGS
-  const {minBookingLength, maxBookingLength} = settings;
+export default function DateSelector({ cabin, settings, bookedDates }) {
+  const { range, setRange, resetRange } = useReservation();
+
+  const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
+  const { minBookingLength, maxBookingLength } = settings;
+  const { regularPrice, discount } = cabin;
+  const numNights = differenceInDays(displayRange.to, displayRange.from);
+  const cabinPrice = numNights * (regularPrice - discount);
 
   return (
     <div className="flex flex-col justify-between border border-slate-800">
-        
       <DayPicker
         className="pt-10 pb-5 place-self-center text-slate-400"
         mode="range"
         onSelect={setRange}
-        selected={range}
+        selected={displayRange}
         min={minBookingLength + 1}
         max={maxBookingLength}
         startMonth={new Date()}
-        disabled={{ before: new Date() }}
+        // disabled={[{ before: new Date() }, (currDate) => bookedDates.some((date) => isSameDay(date, currDate))]}
         endMonth={new Date(new Date().getFullYear() + 5, 0)}
         captionLayout="dropdown"
         numberOfMonths={1}
+        disabled={(currDate) =>
+          bookedDates.some((date) => isSameDay(date, currDate))
+        }
       />
       <div className="flex items-center justify-between px-8 bg-amber-500 text-slate-800 h-[60px]">
         <div className="flex items-baseline gap-6">
@@ -56,7 +66,7 @@ export default function DateSelector({cabin, settings, bookedDates}) {
               </p>
               <p>
                 <span className="text-lg font-bold uppercase">Total</span>{" "}
-                <span className="text-2xl font-semibold">${cabinPrice*numNights}</span>
+                <span className="text-2xl font-semibold">${cabinPrice}</span>
               </p>
             </>
           ) : null}
