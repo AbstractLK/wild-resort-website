@@ -8,7 +8,7 @@ import Link from "next/link";
 import { deleteReservation } from "../_lib/actions";
 import SpinnerMini from "./SpinnerMini";
 
-export default function ReservationCard({ booking }) {
+export default function ReservationCard({ booking, onDelete }) {
   const {
     id,
     guestId,
@@ -25,7 +25,7 @@ export default function ReservationCard({ booking }) {
   const [isPending, startTransition] = useTransition();
   const handleDelete = () => {
     if(confirm("Are you sure you want to delete this reservation?")){
-      startTransition(() => deleteReservation(id));
+      startTransition(() => onDelete(id));
     }
   }
 
