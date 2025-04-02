@@ -23,12 +23,7 @@ export default async function Page({searchParams}) {
         Our Luxury Cabins
       </h1>
       <p className="text-slate-300 text-base mb-10">
-        Cozy yet luxurious cabins, located right in the heart of the Italian
-        Dolomites. Imagine waking up to beautiful mountain views, spending your
-        days exploring the dark forests around, or just relaxing in your private
-        hot tub under the stars. Enjoy nature&apos;s beauty in your own little
-        home away from home. The perfect spot for a peaceful, calm vacation.
-        Welcome to paradise.
+      Nestled in the heart of Sri Lanka&apos;s breathtaking Ella region, our luxurious cabins offer an unparalleled escape into nature. Wake up to panoramic views of misty mountains, immerse yourself in the lush wilderness, or unwind in your private hot tub beneath a starlit sky. Whether you seek adventure or tranquility, our elegantly designed cabins provide the perfect blend of comfort and serenity. Experience the untouched beauty of Ella in your own private retreat—where nature meets luxury.
       </p>
 
       <div className="flex justify-end mb-8">

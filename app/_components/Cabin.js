@@ -22,9 +22,9 @@ export default function Cabin({cabin}) {
             Cabin {name}
           </h3>
 
-          <p className="text-lg text-slate-300 mb-10">
+          <div className="text-base text-slate-300 mb-10">
             <TextExpander>{description}</TextExpander>
-          </p>
+          </div>
 
           <ul className="flex flex-col gap-4 mb-7">
             <li className="flex gap-3 items-center">
@@ -37,8 +37,8 @@ export default function Cabin({cabin}) {
             <li className="flex gap-3 items-center">
               <MapPinIcon className="h-5 w-5 text-slate-600" />
               <span className="text-lg">
-                Located in the heart of the{" "}
-                <span className="font-bold">Dolomites</span> (Italy)
+                Located in the{" "}
+                <span className="font-bold">Ella</span> (Sri Lanka)
               </span>
             </li>
             <li className="flex gap-3 items-center">

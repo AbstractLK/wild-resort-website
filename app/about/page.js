@@ -21,22 +21,13 @@ export default async function Page() {
         </h1>
         <div className="space-y-8">
           <p>
-            Where nature&apos;s beauty and comfortable living blend seamlessly.
-            Hidden away in the heart of the Italian Dolomites, this is your
-            paradise away from home. But it&apos;s not just about the luxury
-            cabins. It&apos;s about the experience of reconnecting with nature
-            and enjoying simple pleasures with family.
+          Where untamed nature and luxury come together in perfect harmony. Tucked away in Sri Lanka&apos;s pristine wilderness, this is your ultimate escape into tranquility. More than just a stay, it&apos;s an experience—an opportunity to reconnect with nature and create unforgettable moments with loved ones.
           </p>
           <p>
-            Our {cabins.length} luxury cabins provide a cozy base, but the real freedom and
-            peace you&apos;ll find in the surrounding mountains. Wander through
-            lush forests, breathe in the fresh air, and watch the stars twinkle
-            above from the warmth of a campfire or your hot tub.
+          Our {cabins.length} exclusive luxury cabins offer a cozy yet opulent retreat, but the true magic lies in the wild landscapes that surround you. Wander through dense forests, breathe in the fresh jungle air, and gaze at the starlit sky while unwinding by a crackling fire or soaking in your private plunge pool.
           </p>
           <p>
-            This is where memorable moments are made, surrounded by
-            nature&apos;s splendor. It&apos;s a place to slow down, relax, and
-            feel the joy of being together in a beautiful setting.
+          Here, time slows down, worries fade, and nature&apos;s beauty takes center stage. Discover the perfect blend of adventure and serenity—your private paradise in the heart of Sri Lanka&apos;s wilderness.
           </p>
         </div>
       </div>
@@ -53,18 +44,10 @@ export default async function Page() {
         </h2>
         <div className="space-y-8">
           <p>
-            Since 1962, The wild resort has been a cherished family-run retreat.
-            Started by our grandparents, this haven has been nurtured with love
-            and care, passing down through our family as a testament to our
-            dedication to creating a warm, welcoming environment.
+          Since 1962, The Wild Resort has been a treasured family-run sanctuary, deeply rooted in Sri Lanka&apos;s breathtaking wilderness. Founded by our grandparents, this retreat has been lovingly nurtured through generations, ensuring every guest experiences the warmth and care that only a family legacy can provide.
           </p>
           <p>
-            Over the years, we&apos;ve maintained the essence of The wild resort,
-            blending the timeless beauty of the mountains with the personal
-            touch only a family business can offer. Here, you&apos;re not just a
-            guest; you&apos;re part of our extended family. So join us at The
-            wild resort soon, where tradition meets tranquility, and every visit
-            is like coming home.
+          Over the years, we have preserved the essence of The Wild Resort—where untouched nature meets heartfelt hospitality. Here, you&apos;re more than just a guest; you become part of our extended family. Come and experience a place where tradition blends with tranquility, and every visit feels like coming home.
           </p>
           <div>
             <Link href="/cabins" className="text-slate-800 mt-4 px-8 py-4 bg-amber-300 hover:bg-amber-400 hover:text-slate-800 transition-all font-semibold">
