@@ -2,10 +2,28 @@
 
 import React from "react";
 import { useReservation } from "./ReservationContext";
+import { createReservation } from "../_lib/actions";
+import { differenceInDays } from "date-fns";
+import SubmitButton from "./SubmitButton";
 
 export default function ReservationForm({ cabin, user }) {
-  const { maxCapacity } = cabin;
-  const { range } = useReservation();
+  const { id, maxCapacity, regularPrice, discount } = cabin;
+  const { range, resetRange } = useReservation();
+
+  const startDate = range.from;
+  const endDate = range.to;
+  const numNights = differenceInDays(endDate, startDate);
+  const cabinPrice = numNights * (regularPrice - discount);
+
+  const bookingData = {
+    startDate,
+    endDate,
+    numNights,
+    cabinPrice,
+    cabinId: id
+  }
+
+  const createReservationWithData = createReservation.bind(null, bookingData);
 
   return (
     <div>
@@ -23,7 +41,10 @@ export default function ReservationForm({ cabin, user }) {
       </div>
       {range.from && <span>From: {range.from.toLocaleDateString()}</span>}
       {range.to && <span> To: {range.to.toLocaleDateString()}</span>}
-      <form className="bg-slate-800 py-10 px-16 text-lg flex flex-col gap-5">
+      <form action={async (formData) => {
+        await createReservationWithData(formData);
+        resetRange();
+      }} className="bg-slate-800 py-10 px-16 text-lg flex flex-col gap-5">
         <div className="space-y-2">
           <label htmlFor="numGuests">How many guests?</label>
           <select
@@ -50,10 +71,15 @@ export default function ReservationForm({ cabin, user }) {
           />
         </div>
         <div className="flex justify-end items-center gap-6">
-          <p className="text-slate-300 text-base">Start by selecting dates</p>
-          <button className="bg-amber-500 px-8 py-4 text-slate-800 font-semibold hover:bg-amber-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-            Reserve now
-          </button>
+          {
+            (startDate && endDate) ? (
+              <SubmitButton pendingText='reserving...'>
+                Reserve now
+              </SubmitButton>
+            ) : (
+              <p className="text-slate-300 text-base">Start by selecting dates</p>
+            )
+          }
         </div>
       </form>
     </div>

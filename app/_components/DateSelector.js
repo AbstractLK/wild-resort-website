@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useReservation } from "./ReservationContext";
-import { differenceInDays, isSameDay, isWithinInterval } from "date-fns";
+import { differenceInDays, isPast, isSameDay, isWithinInterval } from "date-fns";
 
 function isAlreadyBooked(range, datesArr) {
   return (
@@ -40,7 +40,7 @@ export default function DateSelector({ cabin, settings, bookedDates }) {
         endMonth={new Date(new Date().getFullYear() + 5, 0)}
         captionLayout="dropdown"
         numberOfMonths={1}
-        disabled={(currDate) =>
+        disabled={(currDate) => isPast(currDate) || 
           bookedDates.some((date) => isSameDay(date, currDate))
         }
       />

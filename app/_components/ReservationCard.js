@@ -39,7 +39,7 @@ export default function ReservationCard({ booking, onDelete }) {
           className="object-cover border-r border-slate-800"
         />
       </div>
-      <div className="flex-grow px-6 py-3  ">
+      <div className="flex-grow px-8 py-5  ">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">
             {numNights} nights in cabin {name}
@@ -54,7 +54,7 @@ export default function ReservationCard({ booking, onDelete }) {
             </span>
           )}
         </div>
-        <p className="text-lg text-slate-300">
+        <p className="text-base text-slate-300">
           {format(new Date(startDate), "EEE, dd MMM yyyy")} (
           {isToday(new Date(startDate))
             ? "Today"
