@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import {
   CalendarDaysIcon,
   HomeIcon,
   UserIcon,
+  ChevronDownIcon,
+  ChevronUpIcon
 } from "@heroicons/react/24/solid";
 import SignOutButton from "./SignOutButton";
 
@@ -29,15 +32,31 @@ const navLinks = [
 
 function SideNavigation() {
   const pathName = usePathname();
-  // console.log(pathName);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="border-r border-slate-700">
-      <ul className="flex flex-col gap-2 h-full text-lg">
+    <nav className="md:border-r md:border-slate-700">
+      {/* Mobile Account Navigation Header */}
+      <div className="flex justify-between items-center p-4 border-b border-slate-700 md:hidden">
+        <h2 className="font-semibold text-lg">Account Menu</h2>
+        <button 
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="p-1 hover:bg-slate-800 rounded"
+        >
+          {menuOpen ? (
+            <ChevronUpIcon className="h-5 w-5 text-slate-400" />
+          ) : (
+            <ChevronDownIcon className="h-5 w-5 text-slate-400" />
+          )}
+        </button>
+      </div>
+
+      {/* Navigation Links - Always visible on desktop, toggleable on mobile */}
+      <ul className={`flex flex-col gap-2 text-base lg:text-lg ${menuOpen ? 'block' : 'hidden'} md:block`}>
         {navLinks.map((link) => (
           <li key={link.name}>
             <Link
-              className={`py-3 px-5 text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors flex items-center gap-4 font-semibold ${pathName == link.href ? "bg-slate-800" : ""}`}
+              className={`py-2 lg:py-3 px-7 lg:px-5 text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-colors flex items-center gap-2 lg:gap-4 font-semibold ${pathName === link.href ? "bg-slate-800 text-slate-200" : ""}`}
               href={link.href}
             >
               {link.icon}
@@ -46,7 +65,7 @@ function SideNavigation() {
           </li>
         ))}
 
-        <li className="mt-auto">
+        <li className="mt-auto max-sm:hidden">
           <SignOutButton />
         </li>
       </ul>

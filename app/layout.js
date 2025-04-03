@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         className={`${josefin.className} bg-slate-900 text-slate-200 min-h-screen flex flex-col`}
       >
         <Header />
-        <div className="flex-1 px-8 py-12 grid">
+        <div className="flex-1 px-2 sm:px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-12 grid">
           <main className="max-w-6xl xl:max-w-full mx-auto w-full">
               <ReservationProvider>
                 {children}

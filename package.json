@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "@supabase/supabase-js": "^2.49.1",
     "date-fns": "^4.1.0",
+    "lucide-react": "^0.487.0",
     "next": "^15.2.2",
     "next-auth": "^5.0.0-beta.25",
     "react": "^18",

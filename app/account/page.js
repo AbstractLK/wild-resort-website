@@ -7,9 +7,9 @@ export const metadata = {
 export default async function Page() {
   const session = await auth();
 
-    return (
-      <h1 className="text-3xl font-semibold text-amber-400 mb-7">
-        Welcome, {session.user.name}!
-      </h1>
-    );
-  }
+  return (
+    <h1 className="text-2xl md:text-3xl font-semibold text-amber-400 mb-4 sm:mb-7">
+      Welcome, {session.user.name}!
+    </h1>
+  );
+}

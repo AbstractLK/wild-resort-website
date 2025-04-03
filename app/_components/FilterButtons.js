@@ -19,7 +19,7 @@ export default function FilterButton() {
   const Button = ({ filterType, activeFilter, handleFilter, children }) => {
     return (
       <button
-        className={`px-5 py-2 hover:bg-slate-700 ${
+        className={`px-3 py-2 md:px-5 text-sm md:text-base hover:bg-slate-700 ${
           activeFilter == filterType ? "bg-slate-700" : ""
         }`}
         onClick={() => handleFilter(filterType)}
@@ -30,7 +30,7 @@ export default function FilterButton() {
   };
 
   return (
-    <div className="border border-slate-500">
+    <div className="border border-slate-500 flex items-center">
       <Button
         filterType="all"
         activeFilter={activeFilter}

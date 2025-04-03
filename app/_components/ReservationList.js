@@ -18,7 +18,7 @@ export default function ReservationList({bookings}) {
     
 
   return (
-    <ul className="space-y-10">
+    <ul className="space-y-4 sm:space-y-6 md:space-y-10">
         {optimisticBookings.map((booking) => (
         <ReservationCard key={booking.id} booking={booking} onDelete={handleDelete} />
         ))}

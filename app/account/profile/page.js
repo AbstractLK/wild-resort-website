@@ -10,11 +10,11 @@ export default async function Page() {
   const guest = await getGuest(session.user.email);
 
   return (
-    <div>
-      <h2 className="text-amber-200 text-2xl mb-4">
+    <div className="px-4 sm:px-6 py-4 sm:py-6 max-w-3xl mx-auto">
+      <h2 className="text-amber-200 text-xl sm:text-2xl mb-3 sm:mb-4">
         Update your guest profile
       </h2>
-      <p className="text-lg mb-8 text-slate-200">
+      <p className="text-base sm:text-lg mb-4 sm:mb-8 text-slate-200">
         Providing the following information will make your check-in process
         faster and smoother.
       </p>

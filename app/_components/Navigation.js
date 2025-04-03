@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { auth } from '../_lib/auth';
+import MobileNavigation from './MobileNavigation';
 
 const Navigation = async () => {
     const session = await auth();
-    // console.log(session);
 
     return (
-        <nav className="p-4 z-10">
-            <ul className="flex gap-8 mr-0 items-center">
+        <nav className="p-4 z-10 relative">
+            {/* Desktop Navigation */}
+            <ul className="hidden md:flex gap-8 mr-0 items-center">
                 <li>
                     <Link href="/" className="text-slate-200 hover:text-amber-400 transition-colors">
                        Home
@@ -36,6 +37,11 @@ const Navigation = async () => {
                     )}
                 </li>
             </ul>
+
+            {/* Mobile Navigation Button */}
+            <div className="md:hidden">
+                <MobileNavigation session={session} />
+            </div>
         </nav>
     );
 };

@@ -39,10 +39,14 @@ export const getCabins = async () => {
 
 export const getCountries = async () => {
   try {
-    const res = await fetch("https://restcountries.com/v3.1/all?fields=name,flag,flags");
+    // const res = await fetch("https://restcountries.com/v3.1/all?fields=name,flag,flags");
+    const res = await fetch(
+      'https://restcountries.com/v2/all?fields=name,flag'
+    );
     const data = await res.json();
     return data;
-  } catch {
+  } catch (error) {
+    console.error("Error fetching countries:", error);
     throw new Error("Countries could not be fetched");
   }
 }

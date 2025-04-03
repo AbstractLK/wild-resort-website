@@ -27,8 +27,8 @@ export default function ReservationForm({ cabin, user }) {
 
   return (
     <div>
-      <div className="bg-slate-700 text-slate-300 px-16 py-2 flex justify-between items-center">
-        <p>Logged in as </p>
+      <div className="bg-slate-700 text-slate-300 px-4 sm:px-16 py-2 flex flex-col sm:flex-row justify-between items-center">
+        <p className="mb-2 sm:mb-0">Logged in as </p>
         <div className='flex gap-4 items-center'>
           <p> {user.name}</p>
           <img
@@ -39,12 +39,14 @@ export default function ReservationForm({ cabin, user }) {
           />
         </div>
       </div>
-      {range.from && <span>From: {range.from.toLocaleDateString()}</span>}
-      {range.to && <span> To: {range.to.toLocaleDateString()}</span>}
+      {/* <div className="px-4 py-2 text-center sm:text-left">
+        {range.from && <span>From: {range.from.toLocaleDateString()}</span>}
+        {range.to && <span> To: {range.to.toLocaleDateString()}</span>}
+      </div> */}
       <form action={async (formData) => {
         await createReservationWithData(formData);
         resetRange();
-      }} className="bg-slate-800 py-10 px-16 text-lg flex flex-col gap-5">
+      }} className="bg-slate-800 py-6 sm:py-10 px-4 sm:px-16 text-lg flex flex-col gap-5">
         <div className="space-y-2">
           <label htmlFor="numGuests">How many guests?</label>
           <select
@@ -70,7 +72,7 @@ export default function ReservationForm({ cabin, user }) {
             placeholder="Any pets, allergies, special requirements, etc.?"
           />
         </div>
-        <div className="flex justify-end items-center gap-6">
+        <div className="flex justify-center sm:justify-end items-center gap-6">
           {
             (startDate && endDate) ? (
               <SubmitButton pendingText='reserving...'>

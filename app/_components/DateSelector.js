@@ -26,17 +26,18 @@ export default function DateSelector({ cabin, settings, bookedDates }) {
   const numNights = differenceInDays(displayRange.to, displayRange.from);
   const cabinPrice = numNights * (regularPrice - discount);
 
+  // disabled={[{ before: new Date() }, (currDate) => bookedDates.some((date) => isSameDay(date, currDate))]}
+
   return (
-    <div className="flex flex-col justify-between border border-slate-800">
+    <div className="flex flex-col justify-between border border-slate-800 mb-6 lg:mb-0">
       <DayPicker
-        className="pt-10 pb-5 place-self-center text-slate-400"
+        className="pt-10 pb-5 place-self-center text-slate-400 w-full overflow-x-auto"
         mode="range"
         onSelect={setRange}
         selected={displayRange}
         min={minBookingLength + 1}
         max={maxBookingLength}
         startMonth={new Date()}
-        // disabled={[{ before: new Date() }, (currDate) => bookedDates.some((date) => isSameDay(date, currDate))]}
         endMonth={new Date(new Date().getFullYear() + 5, 0)}
         captionLayout="dropdown"
         numberOfMonths={1}
@@ -44,8 +45,8 @@ export default function DateSelector({ cabin, settings, bookedDates }) {
           bookedDates.some((date) => isSameDay(date, currDate))
         }
       />
-      <div className="flex items-center justify-between px-8 bg-amber-500 text-slate-800 h-[60px]">
-        <div className="flex items-baseline gap-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 py-4 sm:py-0 bg-amber-500 text-slate-800 sm:h-[60px]">
+        <div className="flex flex-wrap items-baseline gap-3 sm:gap-6 mb-3 sm:mb-0">
           <p className="flex gap-2 items-baseline">
             {discount > 0 ? (
               <>

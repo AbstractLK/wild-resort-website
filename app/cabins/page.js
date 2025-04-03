@@ -19,14 +19,14 @@ export default async function Page({searchParams}) {
 
   return (
     <div className="max-w-6xl xl:max-w-7xl mx-auto">
-      <h1 className="text-3xl mb-5 text-amber-300 font-medium">
+      <h1 className="max-sm:ml-1 text-2xl md:text-3xl mb-3 md:mb-5 text-amber-300 font-medium">
         Our Luxury Cabins
       </h1>
-      <p className="text-slate-300 text-base mb-10">
+      <p className="max-sm:ml-1 text-slate-300 text-sm md:text-base mb-6 md:mb-10">
       Nestled in the heart of Sri Lanka&apos;s breathtaking Ella region, our luxurious cabins offer an unparalleled escape into nature. Wake up to panoramic views of misty mountains, immerse yourself in the lush wilderness, or unwind in your private hot tub beneath a starlit sky. Whether you seek adventure or tranquility, our elegantly designed cabins provide the perfect blend of comfort and serenity. Experience the untouched beauty of Ella in your own private retreat—where nature meets luxury.
       </p>
 
-      <div className="flex justify-end mb-8">
+      <div className="flex justify-center md:justify-end mb-6 md:mb-8">
         <FilterButtons />
       </div>
 
