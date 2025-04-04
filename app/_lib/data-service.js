@@ -2,6 +2,8 @@ import { supabase } from "./supabase";
 import { notFound } from "next/navigation";
 import { eachDayOfInterval } from 'date-fns';
 
+const countryApiKey = process.env.COUNTRY_API_KEY;
+
 
 // GET
 export async function getCabin(id) {
@@ -37,14 +39,32 @@ export const getCabins = async () => {
   return data;
 };
 
+// export const getCountries = async () => {
+//   try {
+//     const res = await fetch("https://restcountries.com/v3.1/all?fields=name");
+//     // const res = await fetch('https://restcountries.com/v2/all?fields=name,flag');
+//     const data = await res.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching countries:", error);
+//     throw new Error("Countries could not be fetched");
+//   }
+// }
+
 export const getCountries = async () => {
   try {
-    // const res = await fetch("https://restcountries.com/v3.1/all?fields=name,flag,flags");
-    const res = await fetch(
-      'https://restcountries.com/v2/all?fields=name,flag'
-    );
+    const res = await fetch("https://restfulcountries.com/api/v1/countries", {
+      headers: {
+        'Authorization': `Bearer ${countryApiKey}`
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
     const data = await res.json();
-    return data;
+    return data.data;
   } catch (error) {
     console.error("Error fetching countries:", error);
     throw new Error("Countries could not be fetched");
