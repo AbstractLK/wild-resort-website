@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import image1 from "@/public/about-1.jpg";
+import image1 from "@/public/about-1.png";
 import image2 from "@/public/about-2.jpg";
 import { getCabins } from "../_lib/data-service";
 
@@ -46,7 +46,7 @@ export default async function Page() {
       
         <div className="lg:col-span-4 relative aspect-square w-full order-3">
           <Image 
-            src="/about-2.jpg" 
+            src="/about-2.png" 
             fill 
             alt="image2" 
             className="object-cover"
