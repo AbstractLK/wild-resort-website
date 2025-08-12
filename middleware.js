@@ -1,10 +1,7 @@
+import { auth } from "./app/_lib/auth";
 
-import NextAuth from "next-auth";
-import authConfig from "./app/_lib/auth-config";
+export const middleware = auth;
 
-// Initialize NextAuth on Edge (NO db calls here)
-export const { auth: middleware } = NextAuth(authConfig);
-
-export const config = {
-  matcher: ["/account"], // Paths you want to protect
-};
+export const config ={
+    matcher: ["/account"]
+}

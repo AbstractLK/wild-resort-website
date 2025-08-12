@@ -1,43 +1,42 @@
-// import { supabase } from "./supabase";
-import pool from "./pgClient";
+import { supabase } from "./supabase";
 import { notFound } from "next/navigation";
 import { eachDayOfInterval } from 'date-fns';
 
 const countryApiKey = process.env.COUNTRY_API_KEY;
 
 
-// Get a single cabin by ID
+// GET
 export async function getCabin(id) {
-  try {
-    const { rows } = await pool.query('SELECT * FROM cabins WHERE id = $1', [id]);
-    
-    // For testing
-    // await new Promise((res) => setTimeout(res, 1000));
-    
-    if (rows.length === 0) {
-      notFound();
-    }
-    
-    return rows[0];
-  } catch (error) {
-    console.error(error);
+  const { data, error } = await supabase
+    .from("cabins")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  // For testing
+  // await new Promise((res) => setTimeout(res, 1000));
+
+  if (error) {
+    // console.error(error);
     notFound();
   }
+
+  return data;
 }
 
-// Get all cabins
 export const getCabins = async () => {
-  try {
-    const { rows } = await pool.query('SELECT * FROM cabins ORDER BY name');
-    
+  const { data, error } = await supabase
+    .from("cabins")
+    .select("*")
+    .order("name");
+
     // For testing
-    // await new Promise((res) => setTimeout(res, 1000));
-    
-    return rows;
-  } catch (error) {
+//   await new Promise((res) => setTimeout(res, 1000));
+  if (error) {
     console.error(error);
     throw new Error('Cabins could not be loaded');
   }
+  return data;
 };
 
 // export const getCountries = async () => {
@@ -59,31 +58,28 @@ export const getCountries = async () => {
         'Authorization': `Bearer ${countryApiKey}`
       }
     });
+    
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
+    
     const data = await res.json();
     return data.data;
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("Error fetching countries:", error);
     throw new Error("Countries could not be fetched");
   }
 }
 
 export async function getSettings() {
-  try {
-    const { rows } = await pool.query('SELECT * FROM settings LIMIT 1');
-    
-    if (rows.length === 0) {
-      throw new Error('Settings not found');
-    }
-    
-    return rows[0];
-  } catch (error) {
+  const { data, error } = await supabase.from('settings').select('*').single();
+
+  if (error) {
     console.error(error);
     throw new Error('Settings could not be loaded');
   }
+
+  return data;
 }
 
 export async function getBookedDatesByCabinId(cabinId) {
@@ -91,111 +87,102 @@ export async function getBookedDatesByCabinId(cabinId) {
   today.setUTCHours(0, 0, 0, 0);
   today = today.toISOString();
 
-  try {
-    // Getting all bookings - equivalent to Supabase's .or() condition
-    const { rows } = await pool.query(
-      `SELECT * FROM bookings 
-       WHERE "cabinId" = $1 
-       AND ("startDate" >= $2 OR status = 'checked-in')`,
-      [cabinId, today]
-    );
+  // Getting all bookings
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('cabinId', cabinId)
+    .or(`startDate.gte.${today},status.eq.checked-in`);
 
-    // Converting to actual dates to be displayed in the date picker
-    const bookedDates = rows
-      .map((booking) => {
-        return eachDayOfInterval({
-          start: new Date(booking.startDate),
-          end: new Date(booking.endDate),
-        });
-      })
-      .flat();
-
-    return bookedDates;
-  } catch (error) {
+  if (error) {
     console.error(error);
     throw new Error('Bookings could not get loaded');
   }
+
+  // Converting to actual dates to be displayed in the date picker
+  const bookedDates = data
+    .map((booking) => {
+      return eachDayOfInterval({
+        start: new Date(booking.startDate),
+        end: new Date(booking.endDate),
+      });
+    })
+    .flat();
+
+  return bookedDates;
 }
 
 
 // Guests are uniquely identified by their email address
 export async function getGuest(email) {
-  try {
-    const { rows } = await pool.query('SELECT * FROM guests WHERE email = $1', [email]);
-    
-    // Return null if no guest found (similar to Supabase behavior)
-    return rows.length > 0 ? rows[0] : null;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  const { data, error } = await supabase
+    .from('guests')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  // No error here. We handle the possibility of no guest in the sign in callback
+  return data;
 }
 
 
 // CREATE
 export async function createGuest(newGuest) {
-  try {
-    const keys = Object.keys(newGuest);
-    const values = Object.values(newGuest);
-    const columns = keys.join(', ');
-    const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
+  const { data, error } = await supabase.from('guests').insert([newGuest]);
 
-    const query = `INSERT INTO guests (${columns}) VALUES (${placeholders}) RETURNING *`;
-    const { rows } = await pool.query(query, values);
-    
-    return rows[0];
-  } catch (error) {
+  if (error) {
     console.error(error);
     throw new Error('Guest could not be created');
   }
+
+  return data;
 }
 
 export async function createBooking(newBooking) {
-  try {
-    const keys = Object.keys(newBooking);
-    const values = Object.values(newBooking);
-    const columns = keys.join(', ');
-    const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
+  const { data, error } = await supabase
+    .from('bookings')
+    .insert([newBooking])
+    // So that the newly created object gets returned!
+    .select()
+    .single();
 
-    const query = `INSERT INTO bookings (${columns}) VALUES (${placeholders}) RETURNING *`;
-    const { rows } = await pool.query(query, values);
-    
-    return rows[0];
-  } catch (error) {
+  if (error) {
     console.error(error);
     throw new Error('Booking could not be created');
   }
+
+  return data;
 }
 
 
+/////////////
 // UPDATE
-export async function updateGuest(id, updatedFields) {
-  try {
-    const keys = Object.keys(updatedFields);
-    const values = Object.values(updatedFields);
-    const setClause = keys.map((key, i) => `${key} = $${i + 2}`).join(', ');
 
-    const query = `UPDATE guests SET ${setClause} WHERE id = $1 RETURNING *`;
-    const { rows } = await pool.query(query, [id, ...values]);
-    
-    return rows[0];
-  } catch (error) {
+// The updatedFields is an object which should ONLY contain the updated data
+export async function updateGuest(id, updatedFields) {
+  const { data, error } = await supabase
+    .from('guests')
+    .update(updatedFields)
+    .eq('id', id)
+    // .select()
+    // .single();
+
+  if (error) {
     console.error(error);
     throw new Error('Guest could not be updated');
   }
+  return data;
 }
 
 export async function updateBooking(id, updatedFields) {
-  try {
-    const keys = Object.keys(updatedFields);
-    const values = Object.values(updatedFields);
-    const setClause = keys.map((key, i) => `${key} = $${i + 2}`).join(', ');
+  const { error } = await supabase
+    .from('bookings')
+    .update(updatedFields)
+    .eq('id', id)
+    .select()
+    .single();
 
-    const query = `UPDATE bookings SET ${setClause} WHERE id = $1 RETURNING *`;
-    const { rows } = await pool.query(query, [id, ...values]);
-    
-    return rows[0];
-  } catch (error) {
+  if (error) {
     console.error(error);
     throw new Error('Booking could not be updated');
   }
@@ -203,73 +190,45 @@ export async function updateBooking(id, updatedFields) {
 
 
 export async function getBookings(guestId) {
-  try {
-    // Using JOIN to get cabin data similar to Supabase's select with relation
-    const { rows } = await pool.query(
-      `SELECT 
-        b.id, 
-        b.created_at, 
-        b."startDate", 
-        b."endDate", 
-        b."numNights", 
-        b."numGuests", 
-        b."totalPrice", 
-        b."guestId", 
-        b."cabinId",
-        c.name as cabin_name,
-        c.image as cabin_image
-      FROM bookings b
-      JOIN cabins c ON b."cabinId" = c.id
-      WHERE b."guestId" = $1
-      ORDER BY b."startDate"`,
-      [guestId]
-    );
+  const { data, error, count } = await supabase
+    .from('bookings')
+    // We also need data on the cabins as well.
+    .select(
+      'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)'
+    )
+    .eq('guestId', guestId)
+    .order('startDate');
 
-    // Transform the result to match the expected structure
-    const transformedRows = rows.map(row => ({
-      id: row.id,
-      created_at: row.created_at,
-      startDate: row.startDate,
-      endDate: row.endDate,
-      numNights: row.numNights,
-      numGuests: row.numGuests,
-      totalPrice: row.totalPrice,
-      guestId: row.guestId,
-      cabinId: row.cabinId,
-      cabins: {
-        name: row.cabin_name,
-        image: row.cabin_image
-      }
-    }));
-
-    return transformedRows;
-  } catch (error) {
+  if (error) {
     console.error(error);
     throw new Error('Bookings could not get loaded');
   }
+
+  return data;
 }
 
 
 export async function getBooking(bookingId) {
-  try {
-    const { rows } = await pool.query('SELECT * FROM bookings WHERE id = $1', [bookingId]);
-    
-    if (rows.length === 0) {
-      throw new Error('Booking not found');
-    }
-    
-    return rows[0];
-  } catch (error) {
+  const { data, error, count } = await supabase
+    .from('bookings')
+    .select('*')
+    .eq('id', bookingId)
+    .single();
+
+  if (error) {
     console.error(error);
     throw new Error('Booking could not get loaded');
   }
+
+  return data;
 }
 
-// DELETE
+// DELETE ---------------------------------
+
 export async function deleteBooking(id) {
-  try {
-    await pool.query('DELETE FROM bookings WHERE id = $1', [id]);
-  } catch (error) {
+  const { error } = await supabase.from('bookings').delete().eq('id', id);
+
+  if (error) {
     console.error(error);
     throw new Error('Booking could not be deleted');
   }
