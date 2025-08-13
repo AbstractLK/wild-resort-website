@@ -7,9 +7,10 @@ const pool = new Pool({
   database: process.env.DATABASE_NAME,
   port: process.env.DATABASE_PORT || 5432,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
 });
+
+pool.query('SELECT 1')
+  .then(() => console.log('DB connection successful!'))
+  .catch(err => console.error('DB connection error:', err));
 
 export { pool };

@@ -1,22 +1,14 @@
-// app/_lib/auth.js
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
 import PostgresAdapter from "@auth/pg-adapter";
 import { pool } from "./database";
+import authConfig from "./auth.config";
 import { createGuest, getGuest } from "./data-service";
 
-const authConfig = {
+export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth({
+    ...authConfig,
     adapter: PostgresAdapter(pool),
-    providers: [
-        Google({
-            clientId: process.env.AUTH_GOOGLE_ID,
-            clientSecret: process.env.AUTH_GOOGLE_SECRET
-        })
-    ],
     callbacks: {
-        authorized({auth, request}) {
-            return !!auth?.user;
-        },
+        ...authConfig.callbacks,
         async signIn({user}) {
             try {
                 const existingGuest = await getGuest(user.email);
@@ -33,10 +25,5 @@ const authConfig = {
             session.user.guestId = guest.id;
             return session;
         }
-    },
-    pages: {
-        signIn: "/login",
     }
-};
-
-export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth(authConfig);
+});
