@@ -20,9 +20,22 @@ export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth({
                 return false;
             }
         },
-        async session({session}){
-            const guest = await getGuest(session.user.email);
-            session.user.guestId = guest.id;
+        async session({session, user, token}) {
+            // Handle both database sessions and JWT sessions
+            try {
+                if (session?.user?.email) {
+                    const guest = await getGuest(session.user.email);
+                    if (guest) {
+                        session.user.guestId = guest.id;
+                        // Ensure name is available
+                        if (!session.user.name && guest.fullName) {
+                            session.user.name = guest.fullName;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Session callback error:", error);
+            }
             return session;
         }
     }

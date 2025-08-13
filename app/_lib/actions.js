@@ -11,7 +11,10 @@ import {
 } from "./data-service";
 
 export async function signInAction() {
-  await signIn("google", { callbackUrl: "/account" });
+    await signIn("google", { 
+        callbackUrl: "/account",
+        redirect: true 
+    });
 }
 
 export async function signOutAction() {

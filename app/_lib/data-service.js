@@ -111,7 +111,7 @@ export async function createGuest(newGuest) {
   try {
     const result = await client.query(
       'INSERT INTO guests ("fullName", email) VALUES ($1, $2) RETURNING *',
-      [newGuest.fullName, newGuest.email]
+      [newGuest.fullName || newGuest.name || '', newGuest.email]
     );
     return result.rows[0];
   } catch (error) {
@@ -121,6 +121,7 @@ export async function createGuest(newGuest) {
     client.release();
   }
 }
+
 
 export async function createBooking(newBooking) {
   const client = await pool.connect();

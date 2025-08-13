@@ -14,8 +14,8 @@ const authConfig = {
     },
     pages: {
         signIn: "/login",
-    },
-    session: { strategy: "jwt" }
+    }
+    // Remove session: { strategy: "jwt" } since you're using database adapter
 };
 
 export default authConfig;
