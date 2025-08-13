@@ -1,8 +1,12 @@
+// app/_lib/auth.js
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import PostgresAdapter from "@auth/pg-adapter";
+import { pool } from "./database";
 import { createGuest, getGuest } from "./data-service";
 
 const authConfig = {
+    adapter: PostgresAdapter(pool),
     providers: [
         Google({
             clientId: process.env.AUTH_GOOGLE_ID,
