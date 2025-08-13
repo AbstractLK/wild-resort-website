@@ -4,9 +4,9 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'rptcjwswyjzysxhdjnwm.supabase.co',
+            hostname: 'wild-resort-s3.s3.eu-north-1.amazonaws.com',
             port: '',
-            pathname: '/storage/v1/object/public/cabin-images/**',
+            pathname: '/cabin-images/**',
             search: '',
           },
         ],
