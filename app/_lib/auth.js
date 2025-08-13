@@ -1,14 +1,18 @@
 import NextAuth from "next-auth";
-import PostgresAdapter from "@auth/pg-adapter";
-import { pool } from "./database";
-import authConfig from "./auth.config";
+import Google from "next-auth/providers/google";
 import { createGuest, getGuest } from "./data-service";
 
-export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth({
-    ...authConfig,
-    adapter: PostgresAdapter(pool),
+const authConfig = {
+    providers: [
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET
+        })
+    ],
     callbacks: {
-        ...authConfig.callbacks,
+        authorized({auth, request}) {
+            return !!auth?.user;
+        },
         async signIn({user}) {
             try {
                 const existingGuest = await getGuest(user.email);
@@ -20,23 +24,15 @@ export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth({
                 return false;
             }
         },
-        async session({session, user, token}) {
-            // Handle both database sessions and JWT sessions
-            try {
-                if (session?.user?.email) {
-                    const guest = await getGuest(session.user.email);
-                    if (guest) {
-                        session.user.guestId = guest.id;
-                        // Ensure name is available
-                        if (!session.user.name && guest.fullName) {
-                            session.user.name = guest.fullName;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error("Session callback error:", error);
-            }
+        async session({session}){
+            const guest = await getGuest(session.user.email);
+            session.user.guestId = guest.id;
             return session;
         }
+    },
+    pages: {
+        signIn: "/login",
     }
-});
+};
+
+export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth(authConfig);
