@@ -32,7 +32,9 @@ const authConfig = {
     },
     pages: {
         signIn: "/login",
-    }
+    },
+    url: "https://main.d1bgnhsh8k3iat.amplifyapp.com",
+    redirectProxyUrl: "https://main.d1bgnhsh8k3iat.amplifyapp.com"
 };
 
 export const {auth, signIn, signOut, handlers: {GET, POST}} = NextAuth(authConfig);

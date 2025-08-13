@@ -11,7 +11,7 @@ import {
 } from "./data-service";
 
 export async function signInAction() {
-  await signIn("google", { redirectTo: "/account" });
+  await signIn("google", { callbackUrl: "https://main.d1bgnhsh8k3iat.amplifyapp.com/account" });
 }
 
 export async function signOutAction() {
