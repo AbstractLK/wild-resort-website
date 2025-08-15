@@ -12,9 +12,9 @@ import {
 
 export async function signInAction() {
     await signIn("google", { 
-        callbackUrl: "/account",
-        redirect: true 
+        callbackUrl: "/account"
     });
+    redirect("/account");
 }
 
 export async function signOutAction() {
