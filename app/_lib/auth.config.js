@@ -1,6 +1,7 @@
 import Google from "next-auth/providers/google";
 
 const authConfig = {
+    basePath: '/api/auth',
     providers: [
         Google({
             clientId: process.env.AUTH_GOOGLE_ID,
