@@ -11,7 +11,7 @@ export default function Page() {
       </div>
       <div className="relative h-full flex flex-col items-center justify-center text-center p-4">
         <h1 className="text-3xl md:text-5xl lg:text-7xl text-slate-300 mb-6 md:mb-10 tracking-tight">
-          Welcome to paradise
+          Welcome to Paradise
         </h1>
         <Link
           href="/cabins"
