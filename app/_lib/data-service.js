@@ -196,7 +196,7 @@ export async function getBookings(guestId) {
        FROM bookings b
        JOIN cabins c ON b.cabinId = c.id
        WHERE b.guestId = ?
-       ORDER BY b.startDate`,
+       ORDER BY b.created_at DESC`,
       [guestId]
     );
 
