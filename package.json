@@ -10,11 +10,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/pg-adapter": "^1.10.0",
     "@heroicons/react": "^2.2.0",
-    "@supabase/supabase-js": "^2.55.0",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.487.0",
+    "mysql2": "^3.24.6",
     "next": "^15.2.6",
     "next-auth": "^5.0.0-beta.25",
     "react": "^18",

@@ -1,11 +1,19 @@
-import React from 'react'
+import React from 'react';
 import SignInButton from '../_components/SignInButton';
+import { auth } from '../_lib/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
-    title: "Sign In"
-}
+  title: "Sign In",
+};
 
-export default function page() {
+export default async function Page() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect("/account");
+  }
+
   return (
     <div className="flex flex-col gap-6 sm:gap-10 mt-6 sm:mt-10 items-center px-4 sm:px-6 text-center max-w-md mx-auto">
       <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">

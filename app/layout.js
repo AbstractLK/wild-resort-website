@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning
         className={`${josefin.className} bg-slate-900 text-slate-200 min-h-screen flex flex-col`}
       >
         <Header />

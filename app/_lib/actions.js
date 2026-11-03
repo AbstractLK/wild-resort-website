@@ -1,6 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import {redirect} from 'next/navigation';
+import { redirect } from "next/navigation";
 import { auth, signIn, signOut } from "./auth";
 import {
   createBooking,
@@ -11,10 +11,7 @@ import {
 } from "./data-service";
 
 export async function signInAction() {
-    await signIn("google", { 
-        callbackUrl: "/account"
-    });
-    redirect("/account");
+  await signIn("google", { redirectTo: "/account" });
 }
 
 export async function signOutAction() {
@@ -92,8 +89,7 @@ export async function createReservation(bookingData, formData){
     status: 'unconfirmed'
   }
 
-  createBooking(newBooking);
+  await createBooking(newBooking);
   revalidatePath(`/cabins/${bookingData.cabinId}`);
   redirect('/cabins/thankYou');
-
 }

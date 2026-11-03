@@ -1,16 +1,25 @@
-import { Pool } from 'pg';
+import mysql from 'mysql2/promise';
 
-const pool = new Pool({
+const isLocal =
+  process.env.DATABASE_HOST === 'localhost' ||
+  process.env.DATABASE_HOST === '127.0.0.1';
+
+const useSSL =
+  process.env.DATABASE_SSL === 'true' ||
+  (process.env.DATABASE_SSL !== 'false' && !isLocal);
+
+const pool = mysql.createPool({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: process.env.DATABASE_PORT || 5432,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  port: Number(process.env.DATABASE_PORT) || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  decimalNumbers: true,
+  dateStrings: true,
+  ssl: useSSL ? { minVersion: 'TLSv1.2', rejectUnauthorized: true } : undefined,
 });
-
-pool.query('SELECT 1')
-  .then(() => console.log('DB connection successful!'))
-  .catch(err => console.error('DB connection error:', err));
 
 export { pool };
