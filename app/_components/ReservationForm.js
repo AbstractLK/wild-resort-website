@@ -10,9 +10,9 @@ export default function ReservationForm({ cabin, user }) {
   const { id, maxCapacity, regularPrice, discount } = cabin;
   const { range, resetRange } = useReservation();
 
-  const startDate = range.from;
-  const endDate = range.to;
-  const numNights = differenceInDays(endDate, startDate);
+  const startDate = range?.from;
+  const endDate = range?.to;
+  const numNights = (startDate && endDate) ? differenceInDays(endDate, startDate) : 0;
   const cabinPrice = numNights * (regularPrice - discount);
 
   const bookingData = {
@@ -39,10 +39,6 @@ export default function ReservationForm({ cabin, user }) {
           />
         </div>
       </div>
-      {/* <div className="px-4 py-2 text-center sm:text-left">
-        {range.from && <span>From: {range.from.toLocaleDateString()}</span>}
-        {range.to && <span> To: {range.to.toLocaleDateString()}</span>}
-      </div> */}
       <form action={async (formData) => {
         await createReservationWithData(formData);
         resetRange();
