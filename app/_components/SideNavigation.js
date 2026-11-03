@@ -35,7 +35,7 @@ function SideNavigation() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="md:border-r md:border-slate-700 flex flex-col h-fit">
+    <nav className="md:border-r md:border-slate-700 flex flex-col md:sticky md:top-6 lg:top-8 md:h-[calc(100vh-7rem)] lg:h-[calc(100vh-10rem)] md:min-h-[22rem]">
       {/* Mobile Account Navigation Header */}
       <div className="flex justify-between items-center p-4 border-b border-slate-700 md:hidden">
         <h2 className="font-semibold text-lg">Account Menu</h2>
@@ -67,7 +67,7 @@ function SideNavigation() {
       </ul>
 
       {/* Sign Out Button - Always at the bottom */}
-      <div className="mt-96 max-md:hidden border-t border-slate-700">
+      <div className="mt-auto max-md:hidden border-t border-slate-700">
         <SignOutButton />
       </div>
     </nav>
